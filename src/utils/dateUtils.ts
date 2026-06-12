@@ -12,6 +12,16 @@ const LUNCH_BREAK_HOURS = 1;
 const LUNCH_BREAK_THRESHOLD_HOURS = 4;
 export const MAX_DAILY_HOURS = 8;
 
+export const isToday = (day: DayEntry, today: number) => day.date === today;
+
+export function monthMap(month: number) {
+  return MONTHS[month - 1];
+}
+
+export function weekDaysMap(weekDay: number) {
+  return WEEKDAYS[weekDay];
+}
+
 export function isWeekEnd(day: number, firstDay: number): boolean {
   const weekDay = (firstDay + day - 1) % 7;
   return weekDay === 6 || weekDay === 0;
@@ -55,13 +65,3 @@ export function effectiveHours(slots: TimeSlot[], causale?: Causal): number {
 
 export const calculateWorkedHours = (day: DayEntry, causale: Causal): number =>
   effectiveHours(day.slots ?? [], causale);
-
-export const isToday = (day: DayEntry, today: number) => day.date === today;
-
-export function monthMap(month: number) {
-  return MONTHS[month - 1];
-}
-
-export function weekDaysMap(weekDay: number) {
-  return WEEKDAYS[weekDay];
-}

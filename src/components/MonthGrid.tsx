@@ -28,7 +28,9 @@ export default function MonthGrid() {
   };
 
   const handleSaveEdit = (updatedDay: DayEntry) => {
-    setDays(days.map((d) => (d.date === updatedDay.date ? updatedDay : d)));
+    setDays(
+      days.map((day) => (day.date === updatedDay.date ? updatedDay : day)),
+    );
     setSelectedDay(null);
   };
 

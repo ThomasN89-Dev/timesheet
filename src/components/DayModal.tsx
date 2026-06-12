@@ -72,7 +72,7 @@ export default function DayModal({
             <p className="font-bold">{weekDay}</p>
           </div>
 
-          {timeSlots.length < 2 && (
+          {timeSlots.length < 3 && (
             <div className="w-full flex justify-center mt-3">
               <Button onClick={onAddTimeSlot}>Aggiungi fascia oraria ➕</Button>
             </div>
