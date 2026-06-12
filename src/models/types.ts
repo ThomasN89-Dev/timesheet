@@ -3,6 +3,7 @@ export interface TimeSlot {
   id: string;
   startTime: string;
   endTime: string;
+  causale: Causal;
 }
 
 // Causali
@@ -14,6 +15,11 @@ export interface DayEntry {
   slots?: TimeSlot[];
 }
 
+export interface ButtonProps {
+  onClick: () => void;
+  children: string;
+}
+
 // props card
 export interface DayCardProps {
   weekDay: string;
@@ -21,7 +27,17 @@ export interface DayCardProps {
   handleInfo: (day: DayEntry) => void;
   dayEntry: DayEntry;
   workedHours?: number;
+  orePermesso?: number;
+  oreFerie?: number;
+  oreMalattia?: number;
   isToday: boolean;
+}
+
+export interface DayModalProps {
+  day: DayEntry;
+  weekDay: string;
+  onClose: () => void;
+  onSave: (day: DayEntry) => void;
 }
 
 // Mese
@@ -76,7 +92,7 @@ export const WEEKDAYS: string[] = [
   "Domenica",
   "Lunedì",
   "Martedì",
-  "mercoledì",
+  "Mercoledì",
   "Giovedì",
   "Venerdì",
   "Sabato",

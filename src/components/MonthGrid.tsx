@@ -1,81 +1,68 @@
-import { useEffect, useState } from "react";
-import { MONTHS, WEEKDAYS, type DayEntry } from "../models/types";
+import { useState } from "react";
+import { type DayEntry } from "../models/types";
 import DayCard from "./DayCard";
-import { timeToMinutes } from "../utils/time";
 import useCurrentMonth from "../hooks/useCurrentMonth";
+import DayModal from "./DayModal";
+import {
+  buildDays,
+  calculateWorkedHours,
+  isToday,
+  isWeekEnd,
+  monthMap,
+  weekDaysMap,
+} from "../utils/dateUtils";
 
 export default function MonthGrid() {
-  const [selectedDay, setSelectedDay] = useState<DayEntry | null>(null);
   const { today, currentMonth } = useCurrentMonth();
-  function monthMap(month: number) {
-    return MONTHS[month - 1];
-  }
-
-  function weekDaysMap(weekDay: number) {
-    return WEEKDAYS[weekDay];
-  }
-
-  const isWeekEnd = (day: number) => {
-    const weekDay = (currentMonth.firstDay + day - 1) % 7;
-    return weekDay === 6 || weekDay === 0;
-  };
-
-  const numberArray = Array.from({ length: currentMonth.days }, (_, i) => {
-    const day = i + 1;
-    const workingDay: DayEntry = {
-      date: day,
-      slots: isWeekEnd(day)
-        ? []
-        : [
-            { id: crypto.randomUUID(), startTime: "09:00", endTime: "13:00" },
-            { id: crypto.randomUUID(), startTime: "14:00", endTime: "18:00" },
-          ],
-    };
-
-    return workingDay;
-  });
-
-  const isToday = (day: DayEntry) => day.date === today;
-
-  const calculateWorkedHours = (day: DayEntry): number => {
-    const totalMinutes =
-      day.slots?.reduce((sum, t) => {
-        return sum + timeToMinutes(t.endTime) - timeToMinutes(t.startTime);
-      }, 0) ?? 0;
-
-    const minutesToHours = totalMinutes / 60;
-
-    return minutesToHours;
-  };
+  const [days, setDays] = useState<DayEntry[]>(() => buildDays(currentMonth));
+  const [selectedDay, setSelectedDay] = useState<DayEntry | null>(null);
+  const weekDay = (day: DayEntry) =>
+    weekDaysMap((currentMonth.firstDay + day.date - 1) % 7);
 
   const handleDayInfo = (day: DayEntry) => {
     setSelectedDay(day);
   };
 
-  useEffect(() => {
-    console.log(selectedDay);
-  }, [selectedDay]);
+  const handleCloseDayInfo = () => {
+    setSelectedDay(null);
+  };
+
+  const handleSaveEdit = (updatedDay: DayEntry) => {
+    setDays(days.map((d) => (d.date === updatedDay.date ? updatedDay : d)));
+    setSelectedDay(null);
+  };
 
   return (
-    <div>
+    <div className="relative min-h-screen">
       <h1 className="px-8 py-4">
         {monthMap(currentMonth.month)} - {currentMonth.year}
       </h1>
       <div className="grid xl:grid-cols-7 grid-cols-5 gap-2 px-8">
-        {numberArray.map((day: DayEntry) => {
+        {days.map((day: DayEntry) => {
           return (
             <DayCard
               dayEntry={day}
-              weekDay={weekDaysMap((currentMonth.firstDay + day.date - 1) % 7)}
+              weekDay={weekDay(day)}
               key={day.date}
-              isWeekend={isWeekEnd(day.date)}
+              isWeekend={isWeekEnd(day.date, currentMonth.firstDay)}
               handleInfo={() => handleDayInfo(day)}
-              workedHours={calculateWorkedHours(day)}
-              isToday={isToday(day)}
+              workedHours={calculateWorkedHours(day, "lavoro")}
+              orePermesso={calculateWorkedHours(day, "permesso")}
+              oreFerie={calculateWorkedHours(day, "ferie")}
+              oreMalattia={calculateWorkedHours(day, "malattia")}
+              isToday={isToday(day, today)}
             />
           );
         })}
       </div>
+      {selectedDay && (
+        <DayModal
+          day={selectedDay}
+          weekDay={weekDay(selectedDay)}
+          onClose={handleCloseDayInfo}
+          onSave={handleSaveEdit}
+        />
+      )}
     </div>
   );
 }
