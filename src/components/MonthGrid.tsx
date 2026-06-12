@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { type DayEntry } from "../models/types";
+import { useMemo, useState } from "react";
+import { CAUSALS, type DayEntry } from "../models/types";
 import DayCard from "./DayCard";
 import useCurrentMonth from "../hooks/useCurrentMonth";
 import DayModal from "./DayModal";
@@ -32,6 +32,20 @@ export default function MonthGrid() {
     setSelectedDay(null);
   };
 
+  const totals = useMemo(() => {
+    const causali = CAUSALS;
+    const perCausale = Object.fromEntries(
+      causali.map((c) => [
+        c,
+        days.reduce((sum, d) => sum + calculateWorkedHours(d, c), 0),
+      ]),
+    ) as Record<(typeof causali)[number], number>;
+    return {
+      ...perCausale,
+      totale: Object.values(perCausale).reduce((a, b) => a + b, 0),
+    };
+  }, [days]);
+
   return (
     <div className="relative min-h-screen">
       <h1 className="px-8 py-4">
@@ -54,6 +68,13 @@ export default function MonthGrid() {
             />
           );
         })}
+      </div>
+      <div className="px-8 py-4 flex gap-6">
+        <span>Lavoro: {totals.lavoro}h</span>
+        <span>Permesso: {totals.permesso}h</span>
+        <span>Ferie: {totals.ferie}h</span>
+        <span>Malattia: {totals.malattia}h</span>
+        <span className="font-bold">Totale: {totals.totale}h</span>
       </div>
       {selectedDay && (
         <DayModal

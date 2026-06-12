@@ -51,11 +51,15 @@ export default function DayModal({
       return;
     }
 
-    if (effectiveHours(timeSlots) > MAX_DAILY_HOURS) {
-      setError("Superate ore giornaliere");
+    const total = effectiveHours(timeSlots);
+    if (total !== MAX_DAILY_HOURS) {
+      setError(
+        total > MAX_DAILY_HOURS
+          ? "Superate le ore giornaliere (max 8h)"
+          : `Ore insufficienti: ${total}h su 8h richieste`,
+      );
       return;
     }
-
     onSave({ ...day, slots: timeSlots });
   };
 
@@ -116,7 +120,7 @@ export default function DayModal({
                   </button>
                 </div>
               ) : (
-                <p key={slot.id} className="w-full flex gap-2 items-center">
+                <p key={slot.id} className="w-full flex gap-2 justify-center">
                   <span className="font-bold">
                     {slot.startTime} - {slot.endTime}
                   </span>

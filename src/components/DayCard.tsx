@@ -13,7 +13,11 @@ function DayCard({
 }: DayCardProps) {
   return (
     <div
-      className={`min-w-30 w-56 border flex flex-col justify-between gap-2 border-l-5 rounded-2xl bg-gray-100 ${isWeekend ? "text-red-800 border-l-2 border-red-800 " : "text-blue-800 border-blue-800"} ${orePermesso !== 0 ? "border-r-2 border-r-green-800" : ""} ${oreFerie ? "border-y-purple-800" : ""}`}
+      className={`min-w-30 w-56 border flex flex-col justify-between gap-2 border-l-5 rounded-2xl bg-gray-100
+        ${isWeekend ? "text-red-800 border-l-2 border-red-800 " : "text-blue-800 border-blue-800"}
+        ${orePermesso !== 0 ? "border-r-5 border-r-green-800" : ""}
+        ${oreFerie ? "border-r-5 border-r-orange-800" : ""}
+        ${oreMalattia ? "border-r-5 border-r-fuchsia-800" : ""}`}
     >
       <div className="px-4 pt-1.5">
         <p>

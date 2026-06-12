@@ -46,8 +46,7 @@ export function effectiveHours(slots: TimeSlot[], causale?: Causal): number {
 
   const total = relevant.reduce((sum, s) => sum + slotDurationHours(s), 0);
 
-  const isSingleWorkSlot =
-    relevant.length === 1 && relevant[0].causale === "lavoro";
+  const isSingleWorkSlot = relevant.length === 1;
 
   return isSingleWorkSlot && total > LUNCH_BREAK_THRESHOLD_HOURS
     ? total - LUNCH_BREAK_HOURS
