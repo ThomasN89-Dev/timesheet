@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-import { CAUSALS, type DayEntry } from "../models/types";
-import DayCard from "./DayCard";
-import useCurrentMonth from "../hooks/useCurrentMonth";
-import DayModal from "./DayModal";
+import { CAUSALS, type DayEntry } from "../../models/types";
+import DayCard from "../../components/DayCard";
+import useCurrentMonth from "../../hooks/useCurrentMonth";
+import DayModal from "../../components/DayModal";
 import {
   buildDays,
   calculateWorkedHours,
@@ -10,10 +10,13 @@ import {
   isWeekEnd,
   monthMap,
   weekDaysMap,
-} from "../utils/dateUtils";
+} from "../../utils/dateUtils";
+import { useParams } from "react-router";
 
-export default function MonthGrid() {
-  const { today, currentMonth } = useCurrentMonth();
+export default function Timesheet() {
+  const { month } = useParams();
+  const monthProp = Number(month);
+  const { today, currentMonth } = useCurrentMonth({ monthProp });
   const [days, setDays] = useState<DayEntry[]>(() => buildDays(currentMonth));
   const [selectedDay, setSelectedDay] = useState<DayEntry | null>(null);
   const weekDay = (day: DayEntry) =>

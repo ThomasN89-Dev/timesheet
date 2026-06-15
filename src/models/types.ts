@@ -1,3 +1,13 @@
+// dati di login
+export interface LoginData {
+  userEmail: string;
+  password: string;
+}
+
+export interface CurrentMonthProps {
+  monthProp: number;
+}
+
 // Fascia oraria
 export interface TimeSlot {
   id: string;
