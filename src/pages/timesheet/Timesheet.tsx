@@ -64,7 +64,7 @@ export default function Timesheet() {
           onClick={() => navigate("/timesheet-overview")}
           variant="outline"
         >
-          <MoveLeft />
+          Torna alla panoramica <MoveLeft />
         </Button>
       </div>
       <div className="grid xl:grid-cols-7 grid-cols-5 gap-2 px-8">
