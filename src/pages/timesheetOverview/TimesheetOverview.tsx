@@ -1,4 +1,4 @@
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { monthMap } from "@/utils/dateUtils";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -17,17 +17,23 @@ function TimesheetOverview() {
   };
 
   return (
-    <div>
-      <h1>Benvenuto, {user}</h1>
-      <div>
+    <div className="p-8 flex flex-col gap-4 items-center bg-muted">
+      <h1 className="text-4xl font-bold">Benvenuto, {user}</h1>
+      <div className="min-h-screen w-1/2 flex flex-col gap-4">
         {monthsPassed.map((month) => (
-          <Card key={month}>
-            <CardTitle>{monthMap(month)}</CardTitle>
-            <CardContent>
-              <p onClick={() => handleNavigate(month)}>
-                Vai al timesheet <ArrowRight></ArrowRight>
-              </p>
-            </CardContent>
+          <Card
+            key={month}
+            onClick={() => handleNavigate(month)}
+            className="p-4 min-h-16 flex justify-center cursor-pointer"
+          >
+            <CardTitle>
+              <div className="flex justify-between items-center">
+                <p>{monthMap(month)}</p>
+                <p className="flex items-center gap-3">
+                  Vai al timesheet <ArrowRight />
+                </p>
+              </div>
+            </CardTitle>
           </Card>
         ))}
       </div>

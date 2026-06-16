@@ -11,10 +11,13 @@ import {
   monthMap,
   weekDaysMap,
 } from "../../utils/dateUtils";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { Button } from "@/components/ui/button";
+import { MoveLeft } from "lucide-react";
 
 export default function Timesheet() {
   const { month } = useParams();
+  const navigate = useNavigate();
   const monthProp = Number(month);
   const { today, currentMonth } = useCurrentMonth({ monthProp });
   const [days, setDays] = useState<DayEntry[]>(() => buildDays(currentMonth));
@@ -53,9 +56,17 @@ export default function Timesheet() {
 
   return (
     <div className="relative min-h-screen">
-      <h1 className="px-8 py-4">
-        {monthMap(currentMonth.month)} - {currentMonth.year}
-      </h1>
+      <div className="flex justify-between items-center p-8">
+        <h1>
+          {monthMap(currentMonth.month)} - {currentMonth.year}
+        </h1>
+        <Button
+          onClick={() => navigate("/timesheet-overview")}
+          variant="outline"
+        >
+          <MoveLeft />
+        </Button>
+      </div>
       <div className="grid xl:grid-cols-7 grid-cols-5 gap-2 px-8">
         {days.map((day: DayEntry) => {
           return (
