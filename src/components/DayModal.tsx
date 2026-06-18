@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { type TimeSlot, type DayModalProps } from "../models/types";
-import Button from "./Button";
+import { CAUSALS, type TimeSlot, type DayModalProps } from "../models/types";
 import { timeToMinutes } from "../utils/time";
 import { effectiveHours, MAX_DAILY_HOURS } from "../utils/dateUtils";
+import { Button } from "./ui/button";
 
 export default function DayModal({
   day,
@@ -28,7 +28,7 @@ export default function DayModal({
   const onAddTimeSlot = () => {
     const newTimeSlot: TimeSlot = {
       id: crypto.randomUUID(),
-      causale: "lavoro",
+      causal: "lavoro",
       startTime: "09:00",
       endTime: "18:00",
     };
@@ -51,7 +51,10 @@ export default function DayModal({
       return;
     }
 
-    const total = effectiveHours(timeSlots);
+    const total = CAUSALS.reduce(
+      (sum, c) => sum + effectiveHours(timeSlots, c),
+      0,
+    );
     if (total !== MAX_DAILY_HOURS) {
       setError(
         total > MAX_DAILY_HOURS
@@ -65,7 +68,7 @@ export default function DayModal({
 
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-96 min-h-80 shadow-lg rounded-lg p-4 border-2 bg-blue-100 flex flex-col justify-between">
+      <div className="w-96 min-h-80 shadow-lg rounded-lg p-4 border-2 bg-card text-card-foreground flex flex-col justify-between">
         <div>
           <div className="flex w-full justify-center items-center gap-1.5">
             <p className="font-bold">{day.date}</p>
@@ -74,7 +77,9 @@ export default function DayModal({
 
           {timeSlots.length < 3 && (
             <div className="w-full flex justify-center mt-3">
-              <Button onClick={onAddTimeSlot}>Aggiungi fascia oraria ➕</Button>
+              <Button variant="default" onClick={onAddTimeSlot}>
+                Aggiungi fascia oraria ➕
+              </Button>
             </div>
           )}
 
@@ -88,7 +93,7 @@ export default function DayModal({
                     onChange={(e) =>
                       onTimeSlotChange(e.target.value, slot.id, "startTime")
                     }
-                    className="border-2"
+                    className="border-2 border-input bg-background text-foreground rounded-md px-2 py-1"
                   />
                   <input
                     type="time"
@@ -96,66 +101,70 @@ export default function DayModal({
                     onChange={(e) =>
                       onTimeSlotChange(e.target.value, slot.id, "endTime")
                     }
-                    className="border-2"
+                    className="border-2 border-input bg-background text-foreground rounded-md px-2 py-1"
                   />
                   <select
-                    value={slot.causale}
+                    value={slot.causal}
                     onChange={(e) =>
-                      onTimeSlotChange(e.target.value, slot.id, "causale")
+                      onTimeSlotChange(e.target.value, slot.id, "causal")
                     }
-                    className="border-2"
+                    className="border-2 border-input bg-background text-foreground rounded-md px-2 py-1"
                   >
                     <option value="lavoro">Lavoro</option>
                     <option value="permesso">Permesso</option>
                     <option value="ferie">Ferie</option>
                     <option value="malattia">Malattia</option>
                   </select>
-                  <button
-                    type="button"
+                  <Button
+                    variant="default"
                     onClick={() => setEditingSlotId(null)}
                     className="cursor-pointer"
                     aria-label="Conferma fascia"
                   >
                     ✅
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 <p key={slot.id} className="w-full flex gap-2 justify-center">
                   <span className="font-bold">
                     {slot.startTime} - {slot.endTime}
                   </span>
-                  <span className="font-bold capitalize">{slot.causale}</span>
-                  <button
-                    type="button"
+                  <span className="font-bold capitalize">{slot.causal}</span>
+                  <Button
+                    variant="default"
                     onClick={() => setEditingSlotId(slot.id)}
                     className="cursor-pointer"
                     aria-label="Modifica fascia"
                   >
                     ✏️
-                  </button>
-                  <button
-                    type="button"
+                  </Button>
+                  <Button
+                    variant="default"
                     onClick={() => onSlotDelete(slot.id)}
                     className="cursor-pointer"
                     aria-label="Elimina fascia"
                   >
                     🗑️
-                  </button>
+                  </Button>
                 </p>
               ),
             )}
           </div>
 
           {error && (
-            <p className="text-sm text-red-800 italic text-center mt-2">
+            <p className="text-sm text-destructive italic text-center mt-2">
               {error}
             </p>
           )}
         </div>
 
         <div className="flex justify-around w-full">
-          <Button onClick={handleSave}>Salva ✅</Button>
-          <Button onClick={onClose}>Chiudi ❌</Button>
+          <Button variant="default" onClick={handleSave}>
+            Salva ✅
+          </Button>
+          <Button variant="default" onClick={onClose}>
+            Chiudi ❌
+          </Button>
         </div>
       </div>
     </div>

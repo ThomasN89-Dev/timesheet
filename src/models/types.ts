@@ -1,4 +1,3 @@
-// dati di login
 export interface LoginData {
   userEmail: string;
   password: string;
@@ -8,38 +7,31 @@ export interface CurrentMonthProps {
   monthProp: number;
 }
 
-// Fascia oraria
 export interface TimeSlot {
   id: string;
   startTime: string;
   endTime: string;
-  causale: Causal;
+  causal: Causal;
 }
 
-// Causali
 export type Causal = "lavoro" | "malattia" | "ferie" | "permesso";
 
-// Giorno
+export type Langs = "en" | "it";
+
 export interface DayEntry {
   date: number;
   slots?: TimeSlot[];
 }
 
-export interface ButtonProps {
-  onClick: () => void;
-  children: string;
-}
-
-// props card
 export interface DayCardProps {
   weekDay: string;
   isWeekend: boolean;
   handleInfo: (day: DayEntry) => void;
   dayEntry: DayEntry;
   workedHours?: number;
-  orePermesso?: number;
-  oreFerie?: number;
-  oreMalattia?: number;
+  leaveHours?: number;
+  vacationHours?: number;
+  sickHours?: number;
   isToday: boolean;
 }
 
@@ -50,7 +42,6 @@ export interface DayModalProps {
   onSave: (day: DayEntry) => void;
 }
 
-// Mese
 export interface Month {
   year: number;
   month: number;
@@ -66,8 +57,9 @@ export interface AppState {
   selectedDay: string | null;
 }
 
-// Costanti
 export const CAUSALS: Causal[] = ["lavoro", "malattia", "ferie", "permesso"];
+
+export const LANGS: Langs[] = ["en", "it"];
 
 export const CAUSAL_LABELS: Record<Causal, string> = {
   lavoro: "Lavoro",

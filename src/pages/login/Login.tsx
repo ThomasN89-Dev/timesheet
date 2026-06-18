@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
 import { loginData } from "@/loginData/loginData";
 import type { LoginData } from "@/models/types";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 
 function Login() {
@@ -17,6 +19,8 @@ function Login() {
 
   const userCorrectData = loginData;
   const navigate = useNavigate();
+  const { dispatch } = useAuth();
+  const { t } = useTranslation();
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +29,7 @@ function Login() {
       !userData.userEmail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ||
       userData.userEmail !== userCorrectData.userEmail
     ) {
-      setError("Email non valida");
+      setError(t("login.errors.incorrectEmail"));
       return;
     }
 
@@ -33,11 +37,12 @@ function Login() {
       !userData.password.trim() ||
       userData.password !== userCorrectData.password
     ) {
-      setError("Password non valida");
+      setError(t("login.errors.incorrectPassword"));
       return;
     }
     setError("");
     setSuccessfullLogin(true);
+    dispatch({ type: "LOGIN", payload: userData.userEmail });
   };
 
   useEffect(() => {
@@ -47,15 +52,17 @@ function Login() {
   }, [navigate, successFullLogin]);
 
   return (
-    <div className="w-full min-h-screen flex justify-center items-center bg-muted">
+    <div className="w-full flex-1 flex justify-center items-center bg-muted">
       <Card className="w-full max-w-sm p-4">
         <CardHeader>
-          <CardTitle>Accedi al tuo account</CardTitle>
+          <CardTitle>{t("login.insertCredential")}</CardTitle>
         </CardHeader>
         <form onSubmit={onSubmit}>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="login-email">Email:</FieldLabel>
+              <FieldLabel htmlFor="login-email">
+                {t("login.userEmail")}
+              </FieldLabel>
               <Input
                 type="email"
                 id="login-email"
@@ -69,7 +76,9 @@ function Login() {
               ) : (
                 <></>
               )}
-              <FieldLabel htmlFor="login-password">Password</FieldLabel>
+              <FieldLabel htmlFor="login-password">
+                {t("login.password")}
+              </FieldLabel>
               <Input
                 type="password"
                 id="login-password"
@@ -85,7 +94,7 @@ function Login() {
               )}
             </Field>
             <Field orientation="horizontal">
-              <Button variant="default">Login</Button>
+              <Button variant="default">{t("login.loginBtn")}</Button>
             </Field>
           </FieldGroup>
         </form>

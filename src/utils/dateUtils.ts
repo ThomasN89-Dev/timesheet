@@ -40,7 +40,7 @@ export function buildDays(currentMonth: Month): DayEntry[] {
               id: crypto.randomUUID(),
               startTime: "09:00",
               endTime: "18:00",
-              causale: "lavoro",
+              causal: "lavoro",
             },
           ],
     };
@@ -51,8 +51,8 @@ export function slotDurationHours(slot: TimeSlot): number {
   return (timeToMinutes(slot.endTime) - timeToMinutes(slot.startTime)) / 60;
 }
 
-export function effectiveHours(slots: TimeSlot[], causale?: Causal): number {
-  const relevant = causale ? slots.filter((s) => s.causale === causale) : slots;
+export function effectiveHours(slots: TimeSlot[], causal?: Causal): number {
+  const relevant = causal ? slots.filter((s) => s.causal === causal) : slots;
 
   const total = relevant.reduce((sum, s) => sum + slotDurationHours(s), 0);
 
@@ -63,5 +63,5 @@ export function effectiveHours(slots: TimeSlot[], causale?: Causal): number {
     : total;
 }
 
-export const calculateWorkedHours = (day: DayEntry, causale: Causal): number =>
-  effectiveHours(day.slots ?? [], causale);
+export const calculateWorkedHours = (day: DayEntry, causal: Causal): number =>
+  effectiveHours(day.slots ?? [], causal);

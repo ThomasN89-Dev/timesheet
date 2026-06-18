@@ -20,7 +20,11 @@ export default function Timesheet() {
   const navigate = useNavigate();
   const monthProp = Number(month);
   const { today, currentMonth } = useCurrentMonth({ monthProp });
-  const [days, setDays] = useState<DayEntry[]>(() => buildDays(currentMonth));
+  const [days, setDays] = useState<DayEntry[]>(() => {
+    return localStorage.getItem(`timesheet-${month}`)
+      ? JSON.parse(localStorage.getItem(`timesheet-${month}`)!)
+      : buildDays(currentMonth);
+  });
   const [selectedDay, setSelectedDay] = useState<DayEntry | null>(null);
   const weekDay = (day: DayEntry) =>
     weekDaysMap((currentMonth.firstDay + day.date - 1) % 7);
@@ -34,28 +38,30 @@ export default function Timesheet() {
   };
 
   const handleSaveEdit = (updatedDay: DayEntry) => {
-    setDays(
-      days.map((day) => (day.date === updatedDay.date ? updatedDay : day)),
+    const updatedDays = days.map((day) =>
+      day.date === updatedDay.date ? updatedDay : day,
     );
+    setDays(updatedDays);
     setSelectedDay(null);
+    localStorage.setItem(`timesheet-${month}`, JSON.stringify(updatedDays));
   };
 
   const totals = useMemo(() => {
-    const causali = CAUSALS;
-    const perCausale = Object.fromEntries(
-      causali.map((c) => [
+    const causals = CAUSALS;
+    const byCausal = Object.fromEntries(
+      causals.map((c) => [
         c,
         days.reduce((sum, d) => sum + calculateWorkedHours(d, c), 0),
       ]),
-    ) as Record<(typeof causali)[number], number>;
+    ) as Record<(typeof causals)[number], number>;
     return {
-      ...perCausale,
-      totale: Object.values(perCausale).reduce((a, b) => a + b, 0),
+      ...byCausal,
+      total: Object.values(byCausal).reduce((a, b) => a + b, 0),
     };
   }, [days]);
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-background text-foreground">
       <div className="flex justify-between items-center p-8">
         <h1>
           {monthMap(currentMonth.month)} - {currentMonth.year}
@@ -77,9 +83,9 @@ export default function Timesheet() {
               isWeekend={isWeekEnd(day.date, currentMonth.firstDay)}
               handleInfo={() => handleDayInfo(day)}
               workedHours={calculateWorkedHours(day, "lavoro")}
-              orePermesso={calculateWorkedHours(day, "permesso")}
-              oreFerie={calculateWorkedHours(day, "ferie")}
-              oreMalattia={calculateWorkedHours(day, "malattia")}
+              leaveHours={calculateWorkedHours(day, "permesso")}
+              vacationHours={calculateWorkedHours(day, "ferie")}
+              sickHours={calculateWorkedHours(day, "malattia")}
               isToday={isToday(day, today)}
             />
           );
@@ -90,7 +96,7 @@ export default function Timesheet() {
         <span>Permesso: {totals.permesso}h</span>
         <span>Ferie: {totals.ferie}h</span>
         <span>Malattia: {totals.malattia}h</span>
-        <span className="font-bold">Totale: {totals.totale}h</span>
+        <span className="font-bold">Totale: {totals.total}h</span>
       </div>
       {selectedDay && (
         <DayModal

@@ -1,16 +1,18 @@
 import { Card, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/context/AuthContext";
 import { monthMap } from "@/utils/dateUtils";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router";
 
 function TimesheetOverview() {
-  const user = "Thomas Neroni";
   const now = new Date();
   const month = now.getMonth() + 1;
   const monthsPassed = Array.from({ length: month }, (_, i) => {
     return i + 1;
   });
   const navigate = useNavigate();
+  const { state } = useAuth();
+  const user = state.userName;
 
   const handleNavigate = (month: number) => {
     navigate(`/timesheet/${month}`);

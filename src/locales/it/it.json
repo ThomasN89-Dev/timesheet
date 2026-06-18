@@ -1,0 +1,16 @@
+{
+  "languages": {
+    "en": "Inglese",
+    "it": "Italiano"
+  },
+  "login": {
+    "insertCredential": "Accedi al tuo account",
+    "userEmail": "Email:",
+    "password": "Password:",
+    "loginBtn": "Accedi",
+    "errors": {
+      "incorrectEmail": "Email non valida",
+      "incorrectPassword": "Password non valida"
+    }
+  }
+}
