@@ -14,10 +14,12 @@ import {
 import { useNavigate, useParams } from "react-router";
 import { Button } from "@/components/ui/button";
 import { MoveLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function Timesheet() {
   const { month } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const monthProp = Number(month);
   const { today, currentMonth } = useCurrentMonth({ monthProp });
   const [days, setDays] = useState<DayEntry[]>(() => {
@@ -70,7 +72,7 @@ export default function Timesheet() {
           onClick={() => navigate("/timesheet-overview")}
           variant="outline"
         >
-          Torna alla panoramica <MoveLeft />
+          {t("timesheet.backToOverview")} <MoveLeft />
         </Button>
       </div>
       <div className="grid xl:grid-cols-7 grid-cols-5 gap-2 px-8">
@@ -92,11 +94,11 @@ export default function Timesheet() {
         })}
       </div>
       <div className="px-8 py-4 flex gap-6">
-        <span>Lavoro: {totals.lavoro}h</span>
-        <span>Permesso: {totals.permesso}h</span>
-        <span>Ferie: {totals.ferie}h</span>
-        <span>Malattia: {totals.malattia}h</span>
-        <span className="font-bold">Totale: {totals.total}h</span>
+        <span>{t("timesheet.totals.work")} {totals.lavoro}h</span>
+        <span>{t("timesheet.totals.leave")} {totals.permesso}h</span>
+        <span>{t("timesheet.totals.vacation")} {totals.ferie}h</span>
+        <span>{t("timesheet.totals.sick")} {totals.malattia}h</span>
+        <span className="font-bold">{t("timesheet.totals.total")} {totals.total}h</span>
       </div>
       {selectedDay && (
         <DayModal

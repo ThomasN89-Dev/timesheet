@@ -2,6 +2,7 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/context/AuthContext";
 import { monthMap } from "@/utils/dateUtils";
 import { ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 
 function TimesheetOverview() {
@@ -13,6 +14,7 @@ function TimesheetOverview() {
   const navigate = useNavigate();
   const { state } = useAuth();
   const user = state.userName;
+  const { t } = useTranslation();
 
   const handleNavigate = (month: number) => {
     navigate(`/timesheet/${month}`);
@@ -20,7 +22,7 @@ function TimesheetOverview() {
 
   return (
     <div className="p-8 flex flex-col gap-4 items-center bg-muted">
-      <h1 className="text-4xl font-bold">Benvenuto, {user}</h1>
+      <h1 className="text-4xl font-bold">{t("overview.welcome", { user })}</h1>
       <div className="min-h-screen w-1/2 flex flex-col gap-4">
         {monthsPassed.map((month) => (
           <Card
@@ -32,7 +34,7 @@ function TimesheetOverview() {
               <div className="flex justify-between items-center">
                 <p>{monthMap(month)}</p>
                 <p className="flex items-center gap-3">
-                  Vai al timesheet <ArrowRight />
+                  {t("overview.goToTimesheet")} <ArrowRight />
                 </p>
               </div>
             </CardTitle>

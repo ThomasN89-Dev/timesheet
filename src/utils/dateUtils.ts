@@ -1,12 +1,11 @@
 import {
-  MONTHS,
-  WEEKDAYS,
   type Causal,
   type DayEntry,
   type Month,
   type TimeSlot,
 } from "../models/types";
 import { timeToMinutes } from "./time";
+import i18n from "../i18n";
 
 const LUNCH_BREAK_HOURS = 1;
 const LUNCH_BREAK_THRESHOLD_HOURS = 4;
@@ -15,11 +14,11 @@ export const MAX_DAILY_HOURS = 8;
 export const isToday = (day: DayEntry, today: number) => day.date === today;
 
 export function monthMap(month: number) {
-  return MONTHS[month - 1];
+  return i18n.t(`months.${month}`);
 }
 
 export function weekDaysMap(weekDay: number) {
-  return WEEKDAYS[weekDay];
+  return i18n.t(`weekdays.${weekDay}`);
 }
 
 export function isWeekEnd(day: number, firstDay: number): boolean {

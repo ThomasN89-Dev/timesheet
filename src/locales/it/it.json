@@ -12,5 +12,65 @@
       "incorrectEmail": "Email non valida",
       "incorrectPassword": "Password non valida"
     }
+  },
+  "overview": {
+    "welcome": "Benvenuto, {{user}}",
+    "goToTimesheet": "Vai al timesheet"
+  },
+  "timesheet": {
+    "backToOverview": "Torna alla panoramica",
+    "workedHours": "Ore lavorate:",
+    "leaveHours": "Ore di permesso:",
+    "vacationHours": "Ore di ferie:",
+    "sickHours": "Ore di malattia:",
+    "totals": {
+      "work": "Lavoro:",
+      "leave": "Permesso:",
+      "vacation": "Ferie:",
+      "sick": "Malattia:",
+      "total": "Totale:"
+    }
+  },
+  "modal": {
+    "addSlot": "Aggiungi fascia oraria",
+    "save": "Salva",
+    "close": "Chiudi",
+    "confirmSlot": "Conferma fascia",
+    "editSlot": "Modifica fascia",
+    "deleteSlot": "Elimina fascia",
+    "errors": {
+      "invalidSlot": "Fascia oraria non valida, inseriscine una valida.",
+      "exceededHours": "Superate le ore giornaliere (max 8h)",
+      "insufficientHours": "Ore insufficienti: {{total}}h su 8h richieste"
+    }
+  },
+  "causals": {
+    "lavoro": "Lavoro",
+    "permesso": "Permesso",
+    "ferie": "Ferie",
+    "malattia": "Malattia"
+  },
+  "months": {
+    "1": "Gennaio",
+    "2": "Febbraio",
+    "3": "Marzo",
+    "4": "Aprile",
+    "5": "Maggio",
+    "6": "Giugno",
+    "7": "Luglio",
+    "8": "Agosto",
+    "9": "Settembre",
+    "10": "Ottobre",
+    "11": "Novembre",
+    "12": "Dicembre"
+  },
+  "weekdays": {
+    "0": "Domenica",
+    "1": "Lunedì",
+    "2": "Martedì",
+    "3": "Mercoledì",
+    "4": "Giovedì",
+    "5": "Venerdì",
+    "6": "Sabato"
   }
 }

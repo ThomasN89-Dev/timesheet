@@ -60,35 +60,3 @@ export interface AppState {
 export const CAUSALS: Causal[] = ["lavoro", "malattia", "ferie", "permesso"];
 
 export const LANGS: Langs[] = ["en", "it"];
-
-export const CAUSAL_LABELS: Record<Causal, string> = {
-  lavoro: "Lavoro",
-  malattia: "Malattia",
-  ferie: "Ferie",
-  permesso: "Permesso",
-};
-
-export const MONTHS: string[] = [
-  "Gennaio",
-  "Febbraio",
-  "Marzo",
-  "Aprile",
-  "Maggio",
-  "Giugno",
-  "Luglio",
-  "Agosto",
-  "Settembre",
-  "Ottobre",
-  "Novembre",
-  "Dicembre",
-];
-
-export const WEEKDAYS: string[] = [
-  "Domenica",
-  "Lunedì",
-  "Martedì",
-  "Mercoledì",
-  "Giovedì",
-  "Venerdì",
-  "Sabato",
-];

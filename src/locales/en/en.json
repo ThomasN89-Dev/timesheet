@@ -12,5 +12,65 @@
       "incorrectEmail": "Invalid email",
       "incorrectPassword": "Invalid password"
     }
+  },
+  "overview": {
+    "welcome": "Welcome, {{user}}",
+    "goToTimesheet": "Go to timesheet"
+  },
+  "timesheet": {
+    "backToOverview": "Back to overview",
+    "workedHours": "Worked hours:",
+    "leaveHours": "Leave hours:",
+    "vacationHours": "Vacation hours:",
+    "sickHours": "Sick hours:",
+    "totals": {
+      "work": "Work:",
+      "leave": "Leave:",
+      "vacation": "Vacation:",
+      "sick": "Sick:",
+      "total": "Total:"
+    }
+  },
+  "modal": {
+    "addSlot": "Add time slot",
+    "save": "Save",
+    "close": "Close",
+    "confirmSlot": "Confirm slot",
+    "editSlot": "Edit slot",
+    "deleteSlot": "Delete slot",
+    "errors": {
+      "invalidSlot": "Invalid time slot, please enter a valid one.",
+      "exceededHours": "Daily hours exceeded (max 8h)",
+      "insufficientHours": "Insufficient hours: {{total}}h out of 8h required"
+    }
+  },
+  "causals": {
+    "lavoro": "Work",
+    "permesso": "Leave",
+    "ferie": "Vacation",
+    "malattia": "Sick"
+  },
+  "months": {
+    "1": "January",
+    "2": "February",
+    "3": "March",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "August",
+    "9": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December"
+  },
+  "weekdays": {
+    "0": "Sunday",
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday"
   }
 }

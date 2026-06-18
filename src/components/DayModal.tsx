@@ -3,6 +3,7 @@ import { CAUSALS, type TimeSlot, type DayModalProps } from "../models/types";
 import { timeToMinutes } from "../utils/time";
 import { effectiveHours, MAX_DAILY_HOURS } from "../utils/dateUtils";
 import { Button } from "./ui/button";
+import { useTranslation } from "react-i18next";
 
 export default function DayModal({
   day,
@@ -10,6 +11,7 @@ export default function DayModal({
   onSave,
   onClose,
 }: DayModalProps) {
+  const { t } = useTranslation();
   const [editingSlotId, setEditingSlotId] = useState<string | null>(null);
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>(day.slots ?? []);
   const [error, setError] = useState<string | null>(null);
@@ -47,7 +49,7 @@ export default function DayModal({
     );
 
     if (hasInvalidTimeSlot) {
-      setError("Fascia oraria non valida, inseriscine una valida.");
+      setError(t("modal.errors.invalidSlot"));
       return;
     }
 
@@ -58,8 +60,8 @@ export default function DayModal({
     if (total !== MAX_DAILY_HOURS) {
       setError(
         total > MAX_DAILY_HOURS
-          ? "Superate le ore giornaliere (max 8h)"
-          : `Ore insufficienti: ${total}h su 8h richieste`,
+          ? t("modal.errors.exceededHours")
+          : t("modal.errors.insufficientHours", { total }),
       );
       return;
     }
@@ -78,7 +80,7 @@ export default function DayModal({
           {timeSlots.length < 3 && (
             <div className="w-full flex justify-center mt-3">
               <Button variant="default" onClick={onAddTimeSlot}>
-                Aggiungi fascia oraria ➕
+                {t("modal.addSlot")} ➕
               </Button>
             </div>
           )}
@@ -110,16 +112,17 @@ export default function DayModal({
                     }
                     className="border-2 border-input bg-background text-foreground rounded-md px-2 py-1"
                   >
-                    <option value="lavoro">Lavoro</option>
-                    <option value="permesso">Permesso</option>
-                    <option value="ferie">Ferie</option>
-                    <option value="malattia">Malattia</option>
+                    {CAUSALS.map((c) => (
+                      <option key={c} value={c}>
+                        {t(`causals.${c}`)}
+                      </option>
+                    ))}
                   </select>
                   <Button
                     variant="default"
                     onClick={() => setEditingSlotId(null)}
                     className="cursor-pointer"
-                    aria-label="Conferma fascia"
+                    aria-label={t("modal.confirmSlot")}
                   >
                     ✅
                   </Button>
@@ -129,12 +132,12 @@ export default function DayModal({
                   <span className="font-bold">
                     {slot.startTime} - {slot.endTime}
                   </span>
-                  <span className="font-bold capitalize">{slot.causal}</span>
+                  <span className="font-bold">{t(`causals.${slot.causal}`)}</span>
                   <Button
                     variant="default"
                     onClick={() => setEditingSlotId(slot.id)}
                     className="cursor-pointer"
-                    aria-label="Modifica fascia"
+                    aria-label={t("modal.editSlot")}
                   >
                     ✏️
                   </Button>
@@ -142,7 +145,7 @@ export default function DayModal({
                     variant="default"
                     onClick={() => onSlotDelete(slot.id)}
                     className="cursor-pointer"
-                    aria-label="Elimina fascia"
+                    aria-label={t("modal.deleteSlot")}
                   >
                     🗑️
                   </Button>
@@ -160,10 +163,10 @@ export default function DayModal({
 
         <div className="flex justify-around w-full">
           <Button variant="default" onClick={handleSave}>
-            Salva ✅
+            {t("modal.save")} ✅
           </Button>
           <Button variant="default" onClick={onClose}>
-            Chiudi ❌
+            {t("modal.close")} ❌
           </Button>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import type { DayCardProps } from "../models/types";
+import { useTranslation } from "react-i18next";
 
 function DayCard({
   weekDay,
@@ -11,6 +12,7 @@ function DayCard({
   vacationHours,
   sickHours,
 }: DayCardProps) {
+  const { t } = useTranslation();
   return (
     <div
       className={`min-w-30 w-56 border flex flex-col justify-between gap-2 border-l-5 rounded-2xl bg-card text-card-foreground
@@ -23,10 +25,10 @@ function DayCard({
         <p>
           {dayEntry.date} - {weekDay} {isToday && "⭐"}
         </p>
-        {!isWeekend && <p>Ore lavorate: {workedHours}</p>}
-        {leaveHours !== 0 && <p>Ore di permesso: {leaveHours}</p>}
-        {vacationHours !== 0 && <p>Ore di ferie: {vacationHours}</p>}
-        {sickHours !== 0 && <p>Ore di malattia: {sickHours}</p>}
+        {!isWeekend && <p>{t("timesheet.workedHours")} {workedHours}</p>}
+        {leaveHours !== 0 && <p>{t("timesheet.leaveHours")} {leaveHours}</p>}
+        {vacationHours !== 0 && <p>{t("timesheet.vacationHours")} {vacationHours}</p>}
+        {sickHours !== 0 && <p>{t("timesheet.sickHours")} {sickHours}</p>}
       </div>
 
       <div
