@@ -3,6 +3,21 @@ import { CAUSALS, type TimeSlot, type DayModalProps } from "../models/types";
 import { timeToMinutes } from "../utils/time";
 import { effectiveHours, MAX_DAILY_HOURS } from "../utils/dateUtils";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+} from "./ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import { useTranslation } from "react-i18next";
 
 export default function DayModal({
@@ -69,107 +84,107 @@ export default function DayModal({
   };
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-96 min-h-80 shadow-lg rounded-lg p-4 border-2 bg-card text-card-foreground flex flex-col justify-between">
-        <div>
-          <div className="flex w-full justify-center items-center gap-1.5">
-            <p className="font-bold">{day.date}</p>
-            <p className="font-bold">{weekDay}</p>
+    <Dialog open onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-center">
+            {day.date} {weekDay}
+          </DialogTitle>
+        </DialogHeader>
+
+        {timeSlots.length < 3 && (
+          <div className="flex justify-center">
+            <Button variant="default" onClick={onAddTimeSlot}>
+              {t("modal.addSlot")} ➕
+            </Button>
           </div>
+        )}
 
-          {timeSlots.length < 3 && (
-            <div className="w-full flex justify-center mt-3">
-              <Button variant="default" onClick={onAddTimeSlot}>
-                {t("modal.addSlot")} ➕
-              </Button>
-            </div>
-          )}
-
-          <div className="w-full min-h-full flex flex-col items-center mt-4">
-            {timeSlots.map((slot) =>
-              editingSlotId === slot.id ? (
-                <div key={slot.id} className="flex items-center gap-2">
-                  <input
-                    type="time"
-                    value={slot.startTime}
-                    onChange={(e) =>
-                      onTimeSlotChange(e.target.value, slot.id, "startTime")
-                    }
-                    className="border-2 border-input bg-background text-foreground rounded-md px-2 py-1"
-                  />
-                  <input
-                    type="time"
-                    value={slot.endTime}
-                    onChange={(e) =>
-                      onTimeSlotChange(e.target.value, slot.id, "endTime")
-                    }
-                    className="border-2 border-input bg-background text-foreground rounded-md px-2 py-1"
-                  />
-                  <select
-                    value={slot.causal}
-                    onChange={(e) =>
-                      onTimeSlotChange(e.target.value, slot.id, "causal")
-                    }
-                    className="border-2 border-input bg-background text-foreground rounded-md px-2 py-1"
-                  >
+        <div className="flex flex-col items-center gap-2">
+          {timeSlots.map((slot) =>
+            editingSlotId === slot.id ? (
+              <div key={slot.id} className="flex items-center gap-2">
+                <Input
+                  type="time"
+                  value={slot.startTime}
+                  onChange={(e) =>
+                    onTimeSlotChange(e.target.value, slot.id, "startTime")
+                  }
+                  className="w-auto"
+                />
+                <Input
+                  type="time"
+                  value={slot.endTime}
+                  onChange={(e) =>
+                    onTimeSlotChange(e.target.value, slot.id, "endTime")
+                  }
+                  className="w-auto"
+                />
+                <Select
+                  value={slot.causal}
+                  onValueChange={(value) =>
+                    onTimeSlotChange(value, slot.id, "causal")
+                  }
+                >
+                  <SelectTrigger className="w-auto">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
                     {CAUSALS.map((c) => (
-                      <option key={c} value={c}>
+                      <SelectItem key={c} value={c}>
                         {t(`causals.${c}`)}
-                      </option>
+                      </SelectItem>
                     ))}
-                  </select>
-                  <Button
-                    variant="default"
-                    onClick={() => setEditingSlotId(null)}
-                    className="cursor-pointer"
-                    aria-label={t("modal.confirmSlot")}
-                  >
-                    ✅
-                  </Button>
-                </div>
-              ) : (
-                <p key={slot.id} className="w-full flex gap-2 justify-center">
-                  <span className="font-bold">
-                    {slot.startTime} - {slot.endTime}
-                  </span>
-                  <span className="font-bold">{t(`causals.${slot.causal}`)}</span>
-                  <Button
-                    variant="default"
-                    onClick={() => setEditingSlotId(slot.id)}
-                    className="cursor-pointer"
-                    aria-label={t("modal.editSlot")}
-                  >
-                    ✏️
-                  </Button>
-                  <Button
-                    variant="default"
-                    onClick={() => onSlotDelete(slot.id)}
-                    className="cursor-pointer"
-                    aria-label={t("modal.deleteSlot")}
-                  >
-                    🗑️
-                  </Button>
-                </p>
-              ),
-            )}
-          </div>
-
-          {error && (
-            <p className="text-sm text-destructive italic text-center mt-2">
-              {error}
-            </p>
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="default"
+                  onClick={() => setEditingSlotId(null)}
+                  aria-label={t("modal.confirmSlot")}
+                >
+                  ✅
+                </Button>
+              </div>
+            ) : (
+              <p key={slot.id} className="w-full flex gap-2 justify-center">
+                <span className="font-bold">
+                  {slot.startTime} - {slot.endTime}
+                </span>
+                <span className="font-bold">{t(`causals.${slot.causal}`)}</span>
+                <Button
+                  variant="default"
+                  onClick={() => setEditingSlotId(slot.id)}
+                  aria-label={t("modal.editSlot")}
+                >
+                  ✏️
+                </Button>
+                <Button
+                  variant="default"
+                  onClick={() => onSlotDelete(slot.id)}
+                  aria-label={t("modal.deleteSlot")}
+                >
+                  🗑️
+                </Button>
+              </p>
+            ),
           )}
         </div>
 
-        <div className="flex justify-around w-full">
+        {error && (
+          <p className="text-sm text-destructive italic text-center">
+            {error}
+          </p>
+        )}
+
+        <DialogFooter>
           <Button variant="default" onClick={handleSave}>
             {t("modal.save")} ✅
           </Button>
-          <Button variant="default" onClick={onClose}>
+          <Button variant="outline" onClick={onClose}>
             {t("modal.close")} ❌
           </Button>
-        </div>
-      </div>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -94,11 +94,21 @@ export default function Timesheet() {
         })}
       </div>
       <div className="px-8 py-4 flex gap-6">
-        <span>{t("timesheet.totals.work")} {totals.lavoro}h</span>
-        <span>{t("timesheet.totals.leave")} {totals.permesso}h</span>
-        <span>{t("timesheet.totals.vacation")} {totals.ferie}h</span>
-        <span>{t("timesheet.totals.sick")} {totals.malattia}h</span>
-        <span className="font-bold">{t("timesheet.totals.total")} {totals.total}h</span>
+        <span>
+          {t("timesheet.totals.work")} {totals.lavoro}h
+        </span>
+        <span>
+          {t("timesheet.totals.leave")} {totals.permesso}h
+        </span>
+        <span>
+          {t("timesheet.totals.vacation")} {totals.ferie}h
+        </span>
+        <span>
+          {t("timesheet.totals.sick")} {totals.malattia}h
+        </span>
+        <span className="font-bold">
+          {t("timesheet.totals.total")} {totals.total}h
+        </span>
       </div>
       {selectedDay && (
         <DayModal

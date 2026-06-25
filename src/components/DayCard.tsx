@@ -1,5 +1,7 @@
 import type { DayCardProps } from "../models/types";
 import { useTranslation } from "react-i18next";
+import { Card, CardContent } from "./ui/card";
+import { Button } from "./ui/button";
 
 function DayCard({
   weekDay,
@@ -14,14 +16,14 @@ function DayCard({
 }: DayCardProps) {
   const { t } = useTranslation();
   return (
-    <div
-      className={`min-w-30 w-56 border flex flex-col justify-between gap-2 border-l-5 rounded-2xl bg-card text-card-foreground
+    <Card
+      className={`min-w-30 w-56 flex flex-col justify-between gap-2 border-l-5 rounded-2xl
         ${isWeekend ? "border-l-2 border-destructive opacity-60" : "border-primary"}
         ${leaveHours !== 0 ? "border-r-5 border-r-green-600 dark:border-r-green-400" : ""}
         ${vacationHours ? "border-r-5 border-r-orange-600 dark:border-r-orange-400" : ""}
         ${sickHours ? "border-r-5 border-r-fuchsia-600 dark:border-r-fuchsia-400" : ""}`}
     >
-      <div className="px-4 pt-1.5">
+      <CardContent className="px-4 pt-1.5 pb-0">
         <p>
           {dayEntry.date} - {weekDay} {isToday && "⭐"}
         </p>
@@ -29,15 +31,19 @@ function DayCard({
         {leaveHours !== 0 && <p>{t("timesheet.leaveHours")} {leaveHours}</p>}
         {vacationHours !== 0 && <p>{t("timesheet.vacationHours")} {vacationHours}</p>}
         {sickHours !== 0 && <p>{t("timesheet.sickHours")} {sickHours}</p>}
-      </div>
+      </CardContent>
 
-      <div
-        className="w-8 h-8 border border-border flex items-center justify-center self-end mx-3 my-2 rounded-md"
-        onClick={!isWeekend ? () => handleInfo(dayEntry) : undefined}
-      >
-        {isWeekend ? "🎉" : "i"}
+      <div className="flex justify-end px-3 pb-2">
+        <Button
+          variant="outline"
+          size="icon-sm"
+          onClick={!isWeekend ? () => handleInfo(dayEntry) : undefined}
+          disabled={isWeekend}
+        >
+          {isWeekend ? "🎉" : "i"}
+        </Button>
       </div>
-    </div>
+    </Card>
   );
 }
 
