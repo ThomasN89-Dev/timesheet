@@ -26,8 +26,9 @@ function reducer(state: ThemeState, action: ThemeActionType): ThemeState {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const localStorageTheme = localStorage.getItem("themeState") as Themes;
   const [state, dispatch] = useReducer(reducer, {
-    theme: "dark",
+    theme: localStorageTheme || "light",
   });
 
   return (
@@ -41,7 +42,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error("useAuth deve essere usato dentro un ThemeProvider");
+    throw new Error("useTheme deve essere usato dentro un ThemeProvider");
   }
   return context;
 }

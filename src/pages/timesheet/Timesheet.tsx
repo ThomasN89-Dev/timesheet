@@ -11,20 +11,36 @@ import {
   monthMap,
   weekDaysMap,
 } from "../../utils/dateUtils";
-import { useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import { Button } from "@/components/ui/button";
 import { MoveLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-export default function Timesheet() {
-  const { month } = useParams();
+export default function TimesheetGuard() {
+  const { month, year } = useParams();
+  const monthProp = Number(month);
+  const yearProp = Number(year);
+
+  if (isNaN(monthProp) || monthProp < 1 || monthProp > 12) {
+    return <Navigate to="/timesheet-overview" />;
+  }
+
+  return <Timesheet yearProp={yearProp} monthProp={monthProp} />;
+}
+
+function Timesheet({
+  monthProp,
+  yearProp,
+}: {
+  monthProp: number;
+  yearProp: number;
+}) {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const monthProp = Number(month);
-  const { today, currentMonth } = useCurrentMonth({ monthProp });
+  const { today, currentMonth } = useCurrentMonth({ monthProp, yearProp });
   const [days, setDays] = useState<DayEntry[]>(() => {
-    return localStorage.getItem(`timesheet-${month}`)
-      ? JSON.parse(localStorage.getItem(`timesheet-${month}`)!)
+    return localStorage.getItem(`timesheet-${monthProp}`)
+      ? JSON.parse(localStorage.getItem(`timesheet-${monthProp}`)!)
       : buildDays(currentMonth);
   });
   const [selectedDay, setSelectedDay] = useState<DayEntry | null>(null);
@@ -45,7 +61,7 @@ export default function Timesheet() {
     );
     setDays(updatedDays);
     setSelectedDay(null);
-    localStorage.setItem(`timesheet-${month}`, JSON.stringify(updatedDays));
+    localStorage.setItem(`timesheet-${monthProp}`, JSON.stringify(updatedDays));
   };
 
   const totals = useMemo(() => {

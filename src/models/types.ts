@@ -3,8 +3,17 @@ export interface LoginData {
   password: string;
 }
 
+export type LoginErrorsType = "email" | "password";
+
 export interface CurrentMonthProps {
   monthProp: number;
+  yearProp: number;
+}
+
+export interface NewMonth {
+  id: string;
+  month: number;
+  year: number;
 }
 
 export interface TimeSlot {
@@ -49,6 +58,16 @@ export interface Month {
   firstDay: number;
 }
 
+export interface NewTimesheet {
+  month: string;
+  year: string;
+}
+
+export interface NewTimesheetProps {
+  onClose: () => void;
+  onSave: (newTimesheet: NewTimesheet) => void;
+}
+
 export type TimesheetData = Record<Causal, Record<string, DayEntry>>;
 
 export interface AppState {
@@ -60,3 +79,18 @@ export interface AppState {
 export const CAUSALS: Causal[] = ["lavoro", "malattia", "ferie", "permesso"];
 
 export const LANGS: Langs[] = ["en", "it"];
+
+export const MONTHS_NUMBER: string[] = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "11",
+  "12",
+];

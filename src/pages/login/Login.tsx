@@ -4,7 +4,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { loginData } from "@/loginData/loginData";
-import type { LoginData } from "@/models/types";
+import type { LoginData, LoginErrorsType } from "@/models/types";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
@@ -14,7 +14,7 @@ function Login() {
     userEmail: "",
     password: "",
   });
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<LoginErrorsType | null>();
   const [successFullLogin, setSuccessfullLogin] = useState<boolean>(false);
 
   const userCorrectData = loginData;
@@ -29,7 +29,7 @@ function Login() {
       !userData.userEmail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ||
       userData.userEmail !== userCorrectData.userEmail
     ) {
-      setError(t("login.errors.incorrectEmail"));
+      setError("email");
       return;
     }
 
@@ -37,10 +37,10 @@ function Login() {
       !userData.password.trim() ||
       userData.password !== userCorrectData.password
     ) {
-      setError(t("login.errors.incorrectPassword"));
+      setError("password");
       return;
     }
-    setError("");
+    setError(null);
     setSuccessfullLogin(true);
     dispatch({ type: "LOGIN", payload: userData.userEmail });
   };
@@ -68,11 +68,11 @@ function Login() {
                 id="login-email"
                 onChange={(e) => {
                   setUserData({ ...userData, userEmail: e.target.value });
-                  setError("");
+                  setError(null);
                 }}
               />
-              {error && error.toLowerCase().includes("email") ? (
-                <p>{error}</p>
+              {error && error === "email" ? (
+                <p>{t("login.errors.incorrectEmail")}</p>
               ) : (
                 <></>
               )}
@@ -84,11 +84,11 @@ function Login() {
                 id="login-password"
                 onChange={(e) => {
                   setUserData({ ...userData, password: e.target.value });
-                  setError("");
+                  setError(null);
                 }}
               />
-              {error && error.toLowerCase().includes("password") ? (
-                <p>{error}</p>
+              {error && error === "password" ? (
+                <p>{t("login.errors.incorrectPassword")}</p>
               ) : (
                 <></>
               )}

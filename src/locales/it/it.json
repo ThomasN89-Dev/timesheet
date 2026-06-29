@@ -15,7 +15,17 @@
   },
   "overview": {
     "welcome": "Benvenuto, {{user}}",
-    "goToTimesheet": "Vai al timesheet"
+    "goToTimesheet": "Vai al timesheet",
+    "addTimesheet": "Aggiungi timesheet",
+    "noTimesheets": "Nessun timesheet presente",
+    "timesheetAlreadyPresent": "Timesheet per questa data già inserito",
+    "futureDate": "Data non valida"
+  },
+  "addTimesheet": {
+    "addTimesheetTitle": "Aggiungi un timesheet",
+    "monthPlaceholder": "Mese",
+    "yearPlaceholder": "Anno",
+    "addTimesheetError": "Data non valida. Inseriscine una valida"
   },
   "timesheet": {
     "backToOverview": "Torna alla panoramica",

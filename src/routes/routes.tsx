@@ -24,7 +24,7 @@ function AppRoutes() {
         />
         {/* timesheet mensile */}
         <Route
-          path="timesheet/:month"
+          path="timesheet/:year/:month"
           element={
             <RouteProtection>
               <Timesheet />

@@ -6,6 +6,7 @@ import "./i18n.ts";
 import AppRoutes from "./routes/routes.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
+import { Toaster } from "sonner";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
@@ -13,6 +14,7 @@ createRoot(document.getElementById("root")!).render(
       <AuthProvider>
         <StrictMode>
           <AppRoutes />
+          <Toaster />
         </StrictMode>
       </AuthProvider>
     </ThemeProvider>

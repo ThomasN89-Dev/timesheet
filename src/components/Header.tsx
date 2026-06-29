@@ -40,6 +40,12 @@ function Header() {
     }
   }, [theme]);
 
+  const handleDispatch = () => {
+    dispatch({ type: "TOGGLE_THEME" });
+    const newTheme = state.theme === "light" ? "dark" : "light";
+    localStorage.setItem("themeState", newTheme);
+  };
+
   return (
     <header className="sticky top-0 z-50 flex justify-end items-center px-8 py-3 border-b bg-background">
       <Select
@@ -59,12 +65,7 @@ function Header() {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Button
-        variant="outline"
-        onClick={() => {
-          dispatch({ type: "TOGGLE_THEME" });
-        }}
-      >
+      <Button variant="outline" onClick={handleDispatch}>
         {theme === "dark" ? <SunDimIcon /> : <MoonIcon />}{" "}
       </Button>
     </header>
